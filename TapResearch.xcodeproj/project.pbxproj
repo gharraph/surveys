@@ -16,6 +16,7 @@
 		82B873E52630BFDA002FC5BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B873E42630BFDA002FC5BB /* main.m */; };
 		82B873EF2630BFDA002FC5BB /* TapResearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B873EE2630BFDA002FC5BB /* TapResearchTests.m */; };
 		82B873FA2630BFDA002FC5BB /* TapResearchUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B873F92630BFDA002FC5BB /* TapResearchUITests.m */; };
+		82B8740F2630E442002FC5BB /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82B8740E2630E441002FC5BB /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		82B873F52630BFDA002FC5BB /* TapResearchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TapResearchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		82B873F92630BFDA002FC5BB /* TapResearchUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TapResearchUITests.m; sourceTree = "<group>"; };
 		82B873FB2630BFDA002FC5BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		82B8740E2630E441002FC5BB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82B8740F2630E442002FC5BB /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +91,7 @@
 				82B873ED2630BFDA002FC5BB /* TapResearchTests */,
 				82B873F82630BFDA002FC5BB /* TapResearchUITests */,
 				82B873D02630BFD8002FC5BB /* Products */,
+				82B8740D2630E441002FC5BB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,6 +139,14 @@
 				82B873FB2630BFDA002FC5BB /* Info.plist */,
 			);
 			path = TapResearchUITests;
+			sourceTree = "<group>";
+		};
+		82B8740D2630E441002FC5BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				82B8740E2630E441002FC5BB /* WebKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
