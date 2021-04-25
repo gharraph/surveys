@@ -15,6 +15,14 @@
 
 @synthesize apiRequest;
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didComeFromBackground) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [self checkForSurvey];
+    
+}
+
 - (void)checkForSurvey {
     NSURLComponents *urlCompenent = [[NSURLComponents alloc] initWithString:@"https://www.tapresearch.com/supply_api/surveys/offer"];
     
@@ -44,28 +52,26 @@
                     [self->_webView loadRequest:offerRequest];
                 });
             } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertController *successAlert = [UIAlertController alertControllerWithTitle:@"no Survey Available." message:@"" preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Okay", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-                        [self.navigationController popViewControllerAnimated:self];
-                    }];
-                    
-                    [successAlert addAction:okAction];
-                    [self presentViewController:successAlert animated:YES completion:nil];
-                });
+                [self alertWithSurveyUnavailable];
             }
         }
     }]
      resume];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didComeFromBackground) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
-    [self checkForSurvey];
-    
+
+- (void)alertWithSurveyUnavailable {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *successAlert = [UIAlertController alertControllerWithTitle:@"no Survey Available." message:@"" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Okay", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            [self.navigationController popViewControllerAnimated:self];
+        }];
+        
+        [successAlert addAction:okAction];
+        [self presentViewController:successAlert animated:YES completion:nil];
+    });
 }
+
 
 -(void)didComeFromBackground {
     NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:apiRequest];
