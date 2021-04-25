@@ -13,6 +13,7 @@
 
 @implementation ViewController
 
+@synthesize apiRequest;
 
 - (void)checkForSurvey {
     NSURLComponents *urlCompenent = [[NSURLComponents alloc] initWithString:@"https://www.tapresearch.com/supply_api/surveys/offer"];
@@ -25,11 +26,11 @@
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:urlCompenent.URL];
-    request.HTTPMethod = @"POST";
+    apiRequest = [[NSMutableURLRequest alloc] initWithURL:urlCompenent.URL];
+    apiRequest.HTTPMethod = @"POST";
     
     
-    [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [[session dataTaskWithRequest:apiRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             NSLog(@"%@", error.localizedDescription);
         } else if (data) {
@@ -60,8 +61,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didComeFromBackground) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     [self checkForSurvey];
+    
+}
+
+-(void)didComeFromBackground {
+    NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:apiRequest];
+    NSHTTPURLResponse *httpCacheResponse = (NSHTTPURLResponse *)cachedResponse.response;
+    
+    NSString *responseDateString = [httpCacheResponse valueForHTTPHeaderField:@"Date"];
+    NSString *responseDateStringTrimmed = [[responseDateString componentsSeparatedByString:@","] objectAtIndex:1];
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd MMM yyyy HH:mm:ss zzz"];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"GMT"]];
+    NSDate *responseDate = [dateFormatter dateFromString: responseDateStringTrimmed];
+    NSDate *thirtySecondsOldResponseDate = [responseDate dateByAddingTimeInterval:30];
+    NSDate *currentDate = [NSDate date];
+    
+    if ([currentDate compare:thirtySecondsOldResponseDate] == NSOrderedDescending) {
+        // currentDate is later than thirtySecondsOldResponse
+        [self checkForSurvey];
+    }
 }
 
 

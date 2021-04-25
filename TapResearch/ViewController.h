@@ -10,7 +10,7 @@
 
 @interface ViewController : UIViewController
 @property (weak, nonatomic) IBOutlet WKWebView *webView;
-
+@property NSMutableURLRequest *apiRequest;
 
 @end
 
